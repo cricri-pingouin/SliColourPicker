@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2019/01/20 01:37:37.019.bdsproj,C:\Users\Cricri\Documents\Borland Studio Projects\Project1.bdsproj=C:\Users\Cricri\Documents\Borland Studio Projects\colpick.bdsproj</Transaction>
+    <Transaction>2019/01/20 01:38:12.045.pas,C:\Users\Cricri\Documents\Borland Studio Projects\Unit1.pas=D:\Delphi projects\Colour Picker\Unit1.pas</Transaction>
+    <Transaction>2019/01/20 01:38:12.045.dfm,C:\Users\Cricri\Documents\Borland Studio Projects\Unit1.dfm=D:\Delphi projects\Colour Picker\Unit1.dfm</Transaction>
+    <Transaction>2019/01/20 01:38:12.992.bdsproj,C:\Users\Cricri\Documents\Borland Studio Projects\colpick.bdsproj=D:\Delphi projects\Colour Picker\colpick.bdsproj</Transaction>
+  </Transactions>
+</BorlandProject>
