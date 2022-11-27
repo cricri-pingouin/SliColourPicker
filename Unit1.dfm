@@ -4,8 +4,8 @@ object Form1: TForm1
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'Colour Picker'
-  ClientHeight = 224
-  ClientWidth = 320
+  ClientHeight = 259
+  ClientWidth = 349
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -90,249 +90,250 @@ object Form1: TForm1
   OnPaint = FormPaint
   PixelsPerInch = 120
   TextHeight = 16
-  object lblHex: TLabel
-    Left = 104
-    Top = 160
-    Width = 37
-    Height = 16
-    Caption = 'HTML:'
-  end
-  object lblDec: TLabel
-    Left = 144
-    Top = 8
-    Width = 45
-    Height = 16
-    Caption = 'Decimal'
-  end
-  object lblHx: TLabel
-    Left = 200
-    Top = 8
-    Width = 21
-    Height = 16
-    Caption = 'Hex'
-  end
-  object Label1: TLabel
-    Left = 104
-    Top = 192
+  object lblHEX: TLabel
+    Left = 118
+    Top = 93
     Width = 28
     Height = 16
+    Hint = 'Red, Green, Blue (hexadecimal 00-FF)'
     Caption = 'HEX:'
+    ParentShowHint = False
+    ShowHint = True
   end
   object lblRed: TLabel
-    Left = 104
-    Top = 32
+    Left = 94
+    Top = 18
     Width = 27
     Height = 16
     Caption = 'Red:'
   end
   object lblGreen: TLabel
-    Left = 104
-    Top = 64
+    Left = 174
+    Top = 18
     Width = 39
     Height = 16
     Caption = 'Green:'
   end
   object lblBlue: TLabel
-    Left = 104
-    Top = 96
+    Left = 266
+    Top = 18
     Width = 29
     Height = 16
     Caption = 'Blue:'
   end
   object lblRGB: TLabel
-    Left = 104
-    Top = 128
+    Left = 117
+    Top = 61
     Width = 28
     Height = 16
+    Hint = 'Red, Green, Blue (decimal 0-255)'
     Caption = 'RGB:'
+    ParentShowHint = False
+    ShowHint = True
   end
-  object lblC: TLabel
-    Left = 248
-    Top = 24
-    Width = 13
-    Height = 16
-    Caption = 'C:'
-  end
-  object lblM: TLabel
-    Left = 248
-    Top = 48
-    Width = 15
-    Height = 16
-    Caption = 'M:'
-  end
-  object lblY: TLabel
-    Left = 248
-    Top = 72
-    Width = 12
-    Height = 16
-    Caption = 'Y:'
-  end
-  object lblK: TLabel
-    Left = 248
-    Top = 96
-    Width = 12
-    Height = 16
-    Caption = 'K:'
-  end
-  object Label2: TLabel
-    Left = 304
-    Top = 24
-    Width = 12
-    Height = 16
-    Caption = '%'
-  end
-  object Label3: TLabel
-    Left = 304
-    Top = 48
-    Width = 12
-    Height = 16
-    Caption = '%'
-  end
-  object Label4: TLabel
-    Left = 304
-    Top = 72
-    Width = 12
-    Height = 16
-    Caption = '%'
-  end
-  object Label5: TLabel
-    Left = 304
-    Top = 96
-    Width = 12
-    Height = 16
-    Caption = '%'
-  end
-  object lblDrag: TLabel
+  object lblInfo: TLabel
     Left = 8
-    Top = 56
-    Width = 89
-    Height = 48
+    Top = 218
+    Width = 334
+    Height = 32
     Alignment = taCenter
-    Caption = 'Click and'#13#10'drag the'#13#10'cross above'
+    Caption = 
+      'Click/drag cross from top left corner, or type RGB decimal value' +
+      's in red/green/blue boxes, or open colour palette.'
+    WordWrap = True
+  end
+  object lblHSV: TLabel
+    Left = 118
+    Top = 125
+    Width = 29
+    Height = 16
+    Hint = 'Hue ('#176'), Saturation (%), Value (%)'
+    Caption = 'HSV:'
+    ParentShowHint = False
+    ShowHint = True
+  end
+  object lblCMYK: TLabel
+    Left = 118
+    Top = 190
+    Width = 37
+    Height = 16
+    Hint = 'Cyan (%), Magenta (%), Yellow (%), Black (%)'
+    Caption = 'CMYK:'
+    ParentShowHint = False
+    ShowHint = True
+  end
+  object lblHSL: TLabel
+    Left = 118
+    Top = 157
+    Width = 27
+    Height = 16
+    Hint = 'Hue ('#176'), Saturation (%), Lightness (%)'
+    Caption = 'HSL:'
+    ParentShowHint = False
+    ShowHint = True
   end
   object Panel1: TPanel
     Left = 8
-    Top = 120
-    Width = 89
-    Height = 89
-    TabOrder = 0
+    Top = 59
+    Width = 103
+    Height = 103
+    TabOrder = 9
   end
   object edtRD: TEdit
-    Left = 144
-    Top = 32
+    Left = 127
+    Top = 16
+    Width = 41
+    Height = 24
+    TabOrder = 0
+    OnChange = edtRDChange
+  end
+  object edtGD: TEdit
+    Left = 219
+    Top = 16
     Width = 41
     Height = 24
     TabOrder = 1
+    OnChange = edtGDChange
   end
-  object edtRH: TEdit
-    Left = 200
-    Top = 32
+  object edtBD: TEdit
+    Left = 301
+    Top = 16
     Width = 41
     Height = 24
     TabOrder = 2
-  end
-  object edtGD: TEdit
-    Left = 144
-    Top = 64
-    Width = 41
-    Height = 24
-    TabOrder = 3
-  end
-  object edtGH: TEdit
-    Left = 200
-    Top = 64
-    Width = 41
-    Height = 24
-    TabOrder = 4
-  end
-  object edtBD: TEdit
-    Left = 144
-    Top = 96
-    Width = 41
-    Height = 24
-    TabOrder = 5
-  end
-  object edtBH: TEdit
-    Left = 200
-    Top = 96
-    Width = 41
-    Height = 24
-    TabOrder = 6
+    OnChange = edtBDChange
   end
   object edtRGB: TEdit
-    Left = 144
-    Top = 128
-    Width = 121
+    Left = 158
+    Top = 59
+    Width = 137
     Height = 24
-    TabOrder = 11
-  end
-  object edtHTML: TEdit
-    Left = 144
-    Top = 160
-    Width = 121
-    Height = 24
-    TabOrder = 13
+    Hint = 'Red, Green, Blue (decimal 0-255)'
+    TabStop = False
+    ParentShowHint = False
+    ReadOnly = True
+    ShowHint = True
+    TabOrder = 10
   end
   object btnCopyRGB: TButton
-    Left = 272
-    Top = 128
+    Left = 301
+    Top = 59
     Width = 41
     Height = 25
+    Hint = 'Copy RGB to clipboard'
     Caption = 'Copy'
-    TabOrder = 12
+    ParentShowHint = False
+    ShowHint = True
+    TabOrder = 4
     OnClick = btnCopyRGBClick
   end
-  object btnCopyHTML: TButton
-    Left = 272
-    Top = 160
-    Width = 41
-    Height = 25
-    Caption = 'Copy'
-    TabOrder = 14
-    OnClick = btnCopyHTMLClick
-  end
   object edtHEX: TEdit
-    Left = 144
-    Top = 192
-    Width = 121
+    Left = 158
+    Top = 91
+    Width = 137
     Height = 24
-    TabOrder = 15
+    Hint = 'Red, Green, Blue (hexadecimal 00-FF)'
+    TabStop = False
+    ParentShowHint = False
+    ReadOnly = True
+    ShowHint = True
+    TabOrder = 11
   end
   object btnCopyHEX: TButton
-    Left = 272
-    Top = 192
+    Left = 301
+    Top = 91
     Width = 41
     Height = 25
+    Hint = 'Copy HEX to clipboard'
     Caption = 'Copy'
-    TabOrder = 16
+    ParentShowHint = False
+    ShowHint = True
+    TabOrder = 5
     OnClick = btnCopyHEXClick
   end
-  object edtC: TEdit
-    Left = 264
-    Top = 24
-    Width = 41
+  object edtHSV: TEdit
+    Left = 158
+    Top = 123
+    Width = 137
     Height = 24
-    TabOrder = 7
+    Hint = 'Hue ('#176'), Saturation (%), Value (%)'
+    TabStop = False
+    ParentShowHint = False
+    ReadOnly = True
+    ShowHint = True
+    TabOrder = 12
   end
-  object edtM: TEdit
-    Left = 264
-    Top = 48
+  object btnCopyHSV: TButton
+    Left = 301
+    Top = 123
     Width = 41
+    Height = 25
+    Hint = 'Copy HSV to clipboard'
+    Caption = 'Copy'
+    ParentShowHint = False
+    ShowHint = True
+    TabOrder = 6
+    OnClick = btnCopyHSVClick
+  end
+  object edtCMYK: TEdit
+    Left = 158
+    Top = 188
+    Width = 137
     Height = 24
+    Hint = 'Cyan (%), Magenta (%), Yellow (%), Black (%)'
+    TabStop = False
+    ParentShowHint = False
+    ReadOnly = True
+    ShowHint = True
+    TabOrder = 13
+  end
+  object btnCopyCMYK: TButton
+    Left = 301
+    Top = 188
+    Width = 41
+    Height = 25
+    Hint = 'Copy CMYK to clipboard'
+    Caption = 'Copy'
+    ParentShowHint = False
+    ShowHint = True
     TabOrder = 8
+    OnClick = btnCopyCMYKClick
   end
-  object edtY: TEdit
-    Left = 264
-    Top = 72
-    Width = 41
+  object edtHSL: TEdit
+    Left = 158
+    Top = 155
+    Width = 137
     Height = 24
-    TabOrder = 9
+    Hint = 'Hue ('#176'), Saturation (%), Lightness (%)'
+    TabStop = False
+    ParentShowHint = False
+    ReadOnly = True
+    ShowHint = True
+    TabOrder = 14
   end
-  object edtK: TEdit
-    Left = 264
-    Top = 96
+  object btnCopyHSL: TButton
+    Left = 301
+    Top = 155
     Width = 41
-    Height = 24
-    TabOrder = 10
+    Height = 25
+    Hint = 'Copy HSL to clipboard'
+    Caption = 'Copy'
+    ParentShowHint = False
+    ShowHint = True
+    TabOrder = 7
+    OnClick = btnCopyHSLClick
+  end
+  object btnPalette: TButton
+    Left = 8
+    Top = 168
+    Width = 103
+    Height = 44
+    Caption = 'Colour palette'
+    TabOrder = 3
+    OnClick = btnPaletteClick
+  end
+  object dlgColor: TColorDialog
+    Left = 48
+    Top = 24
   end
 end

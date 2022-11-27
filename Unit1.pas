@@ -1,194 +1,296 @@
-Unit Unit1;
+unit Unit1;
 
-Interface
+interface
 
-Uses
+uses
   Windows, Classes, Graphics, Controls, Forms, ExtCtrls, Math, StdCtrls,
-  SysUtils, Clipbrd;
+  SysUtils, Clipbrd, Dialogs;
 
-Type
-  TForm1 = Class(TForm)
-    Panel1: TPanel;
-    edtRD: TEdit;
-    edtRH: TEdit;
-    edtGD: TEdit;
-    edtGH: TEdit;
-    edtBD: TEdit;
-    edtBH: TEdit;
-    edtRGB: TEdit;
-    edtHTML: TEdit;
-    lblHex: TLabel;
-    lblDec: TLabel;
-    lblHx: TLabel;
-    btnCopyRGB: TButton;
-    btnCopyHTML: TButton;
-    Label1: TLabel;
-    edtHEX: TEdit;
-    btnCopyHEX: TButton;
-    edtC: TEdit;
-    edtM: TEdit;
-    edtY: TEdit;
-    edtK: TEdit;
+type
+  TForm1 = class(TForm)
     lblRed: TLabel;
     lblGreen: TLabel;
     lblBlue: TLabel;
+    lblInfo: TLabel;
+    Panel1: TPanel;
+    edtRD: TEdit;
+    edtGD: TEdit;
+    edtBD: TEdit;
     lblRGB: TLabel;
-    lblC: TLabel;
-    lblM: TLabel;
-    lblY: TLabel;
-    lblK: TLabel;
-    Label2: TLabel;
-    Label3: TLabel;
-    Label4: TLabel;
-    Label5: TLabel;
-    lblDrag: TLabel;
-    Procedure FormPaint(Sender: TObject);
-    Procedure FormMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-    Procedure FormMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-    Procedure FormMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
-    Procedure GetColour();
-    Procedure btnCopyRGBClick(Sender: TObject);
-    Procedure btnCopyHTMLClick(Sender: TObject);
-    Procedure btnCopyHEXClick(Sender: TObject);
-  Private
+    edtRGB: TEdit;
+    btnCopyRGB: TButton;
+    lblHEX: TLabel;
+    edtHEX: TEdit;
+    btnCopyHEX: TButton;
+    lblHSV: TLabel;
+    edtHSV: TEdit;
+    btnCopyHSV: TButton;
+    lblCMYK: TLabel;
+    edtCMYK: TEdit;
+    btnCopyCMYK: TButton;
+    lblHSL: TLabel;
+    edtHSL: TEdit;
+    btnCopyHSL: TButton;
+    dlgColor: TColorDialog;
+    btnPalette: TButton;
+    procedure FormPaint(Sender: TObject);
+    procedure FormMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure FormMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure FormMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
+    procedure GetColour();
+    procedure CalculateValues();
+    procedure btnCopyRGBClick(Sender: TObject);
+    procedure btnCopyHEXClick(Sender: TObject);
+    procedure btnCopyHSVClick(Sender: TObject);
+    procedure btnCopyCMYKClick(Sender: TObject);
+    procedure edtRDChange(Sender: TObject);
+    procedure edtGDChange(Sender: TObject);
+    procedure edtBDChange(Sender: TObject);
+    procedure btnCopyHSLClick(Sender: TObject);
+    procedure btnPaletteClick(Sender: TObject);
+  private
     FCaptured: Boolean;
-  Public
+  public
     { Public declarations }
-  End;
+  end;
 
-//Type
-//  THSV = Record  // hue saturation value (HSV)
-//    Hue, Sat, Val: Double;
-//  End;
-
-Var
+var
   Form1: TForm1;
+  //RGB
+  R, G, B: Integer;
 
-Implementation
+implementation
 
 {$R *.dfm}
 {$X+}
 //{$H+}
 
-Const  // the first item, the place where the crosshair is
+const  // the first item, the place where the crosshair is
   ClickRect: TRect = (
-    Left: 10;
+    Left: 8;
     Top: 10;
     Right: 50;
-    Bottom: 50
+    Bottom: 50;
   );
 
-Function DesktopColor(Const X, Y: Integer): TColor;
-Var
+function DesktopColor(const X, Y: Integer): TColor;
+var
   c: TCanvas;
-Begin
+begin
   c := TCanvas.Create;
-  Try
+  try
     c.Handle := GetWindowDC(GetDesktopWindow);
     Result := GetPixel(c.Handle, X, Y);
-  Finally
+  finally
     c.Free;
-  End;
-End;
+  end;
+end;
 
-Procedure TForm1.FormPaint(Sender: TObject);
-Begin
+procedure TForm1.FormPaint(Sender: TObject);
+begin
   //Draw the control and the crosshair if no capturing
-  If GetCapture <> Handle Then
-  Begin
+  if GetCapture <> Handle then
+  begin
     DrawFrameControl(Canvas.Handle, ClickRect, 0, DFCS_BUTTONPUSH);
     DrawIcon(Canvas.Handle, ClickRect.Left, ClickRect.Top, Screen.Cursors[crCross]);
-  End;
-End;
+  end;
+end;
 
-Procedure TForm1.FormMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-Begin
-  If (Button = mbLeft) And (Shift = [ssLeft]) And PtInRect(ClickRect, Point(X, Y)) Then
-  Begin
+procedure TForm1.FormMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  if (Button = mbLeft) and (Shift = [ssLeft]) and PtInRect(ClickRect, Point(X, Y)) then
+  begin
     DrawFrameControl(Canvas.Handle, ClickRect, 0, DFCS_PUSHED);
     FCaptured := True;
     SetCapture(Handle);
     Screen.Cursor := crCross;
-  End;
-End;
+  end;
+end;
 
-Procedure TForm1.FormMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-Begin
-  If FCaptured Then
-  Begin
+procedure TForm1.FormMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  if FCaptured then
+  begin
     FCaptured := False;
     ReleaseCapture;
     InvalidateRect(Handle, @ClickRect, False);
     Screen.Cursor := crDefault;
-  End;
-End;
+  end;
+end;
 
-Procedure TForm1.FormMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
-Begin
-  If FCaptured Then
+procedure TForm1.FormMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
+begin
+  if FCaptured then
     GetColour;
-End;
+end;
 
-Procedure TForm1.GetColour();
-Var
+procedure TForm1.GetColour();
+var
   Pos: TPoint;
   ThisColour: TColor;
-  R, G, B, C, M, Y, K: Integer;
-  Rp, Gp, Bp, Kp: Single;
-Begin
+begin
+  //Get pixel colour
   GetCursorPos(Pos);
   ThisColour := DesktopColor(Pos.X, Pos.Y);
-  Panel1.Color := ThisColour;
-  R := ThisColour And $FF;
-  G := (ThisColour And $FF00) Shr 8;
-  B := (ThisColour And $FF0000) Shr 16;
+  //RGB
+  R := ThisColour and $FF;
+  G := (ThisColour and $FF00) shr 8;
+  B := (ThisColour and $FF0000) shr 16;
+  CalculateValues;
+end;
+
+procedure TForm1.CalculateValues();
+var
+  //CMYK
+  C, M, Y, Rp, Gp, Bp, Kp: Single;
+  //HSV
+  RGBmin, RGBmax, RGBdelta, H, S, V: Single;
+  //HSL
+  Lum, Hue, Sat: Single;
+begin
+  Panel1.Color := R + G shl 8 + B shl 16;
+  edtRD.Text := IntToStr(R);
+  edtGD.Text := IntToStr(G);
+  edtBD.Text := IntToStr(B);
+  //Normalised values for CMYK and HSL
   Rp := R / 255;
   Gp := G / 255;
   Bp := B / 255;
+  //CMYK
   Kp := 1 - Max(Rp, Max(Gp, Bp));
-  K := Round(100 * Kp);
-  If (Kp = 1) Then
-  Begin
+  if (Kp = 1) then
+  begin
     C := 0;
     M := 0;
     Y := 0;
-  End
-  Else
-  Begin
-    C := Round(100 * (1 - Rp - Kp) / (1 - Kp));
-    M := Round(100 * (1 - Gp - Kp) / (1 - Kp));
-    Y := Round(100 * (1 - Bp - Kp) / (1 - Kp));
-  End;
-  edtRD.Text := IntToStr(R);
-  edtRH.Text := IntToHex(R, 2);
-  edtGD.Text := IntToStr(G);
-  edtGH.Text := IntToHex(G, 2);
-  edtBD.Text := IntToStr(B);
-  edtBH.Text := IntToHex(B, 2);
-  edtC.Text := IntToStr(C);
-  edtM.Text := IntToStr(M);
-  edtY.Text := IntToStr(Y);
-  edtK.Text := IntToStr(K);
-  edtRGB.Text := 'RGB(' + edtRD.Text + ', ' + edtGD.Text + ', ' + edtBD.Text + ')';
-  edtHTML.Text := '#' + edtRH.Text + edtGH.Text + edtBH.Text;
-  edtHEX.Text := edtBH.Text + edtGH.Text + edtRH.Text;
+  end
+  else
+  begin
+    C := (1 - Rp - Kp) / (1 - Kp);
+    M := (1 - Gp - Kp) / (1 - Kp);
+    Y := (1 - Bp - Kp) / (1 - Kp);
+  end;
+  //HSV and HSL
+  RGBmin := Min(Min(R, G), B);
+  RGBmax := Max(Max(R, G), B);
+  RGBdelta := RGBmax - RGBmin;
+  //HSV
+  H := 0.0;
+  V := RGBmax;
+  if (RGBmin = RGBmax) then
+  begin
+    H := 0.0;
+    S := 0.0;
+  end
+  else
+  begin
+    if (RGBmax > 0) then
+      S := 255.0 * RGBdelta / RGBmax
+    else
+      S := 0.0;
+    if (S <> 0.0) then
+    begin
+      if R = RGBmax then
+        H := (G - B) / RGBdelta
+      else if G = RGBmax then
+        H := 2.0 + (B - R) / RGBdelta
+      else if B = RGBmax then
+        H := 4.0 + (R - G) / RGBdelta
+    end
+    else
+      H := -1.0;
+    H := H * 60;
+    if H < 0.0 then
+      H := H + 360.0;
+  end;
+  //HSL
+  Lum := (RGBmax + RGBmin) / 510; //Average normalised, = / 2 / 255
+  if (RGBmin = RGBmax) then
+    Sat := 0.0
+  else
+     Sat := RGBdelta / 255  / (1 - Abs(2 * Lum - 1));
+  Sat := Round(Sat * 100);
+  Lum := Round(Lum * 100);
+  Hue := H;
+  //Copyable values
+  edtRGB.Text := 'RGB(' + edtRD.Text + ',' + edtGD.Text + ',' + edtBD.Text + ')';
+  edtHEX.Text := '#' + IntToHex(R, 2) + IntToHex(G, 2) + IntToHex(B, 2);
+  edtHSV.Text := 'HSV(' + IntToStr(Round(H)) + ',' + IntToStr(Round(S * 100 / 255)) + ',' + IntToStr(Round(V * 100 / 255)) + ')';
+  edtHSL.Text := 'HSL(' + IntToStr(Round(Hue)) + ',' + IntToStr(Round(Sat)) + ',' + IntToStr(Round(Lum)) + ')';
+  edtCMYK.Text := 'CMYK(' + IntToStr(Round(C * 100)) + ',' + IntToStr(Round(M * 100)) + ',' + IntToStr(Round(Y * 100)) + ',' + IntToStr(Round(Kp * 100)) + ')';
+end;
 
-End;
+procedure TForm1.edtRDChange(Sender: TObject);
+begin
+  try
+    StrToInt(edtRD.Text);
+  except
+    Exit;
+  end;
+  R := StrToInt(edtRD.Text);
+  CalculateValues;
+end;
 
-Procedure TForm1.btnCopyRGBClick(Sender: TObject);
-Begin
+procedure TForm1.edtGDChange(Sender: TObject);
+begin
+  try
+    StrToInt(edtGD.Text);
+  except
+    Exit;
+  end;
+  G := StrToInt(edtGD.Text);
+  CalculateValues;
+end;
+
+procedure TForm1.edtBDChange(Sender: TObject);
+begin
+  try
+    StrToInt(edtBD.Text);
+  except
+    Exit;
+  end;
+  B := StrToInt(edtBD.Text);
+  CalculateValues;
+end;
+
+procedure TForm1.btnCopyRGBClick(Sender: TObject);
+begin
   Clipboard.AsText := edtRGB.Text;
-End;
+end;
 
-Procedure TForm1.btnCopyHTMLClick(Sender: TObject);
-Begin
-  Clipboard.AsText := edtHTML.Text;
-End;
-
-Procedure TForm1.btnCopyHEXClick(Sender: TObject);
-Begin
+procedure TForm1.btnCopyHEXClick(Sender: TObject);
+begin
   Clipboard.AsText := edtHEX.Text;
-End;
+end;
 
-End.
+procedure TForm1.btnCopyHSLClick(Sender: TObject);
+begin
+  Clipboard.AsText := edtHSL.Text;
+end;
 
+procedure TForm1.btnCopyHSVClick(Sender: TObject);
+begin
+  Clipboard.AsText := edtHSV.Text;
+end;
+
+procedure TForm1.btnCopyCMYKClick(Sender: TObject);
+begin
+  Clipboard.AsText := edtCMYK.Text;
+end;
+
+procedure TForm1.btnPaletteClick(Sender: TObject);
+var
+  MyColour: TColor;
+begin
+  dlgColor.Color := R + G shl 8 + B shl 16;
+  if dlgColor.Execute then
+    MyColour := dlgColor.Color
+  else
+    Exit;
+  R := MyColour and $FF;
+  G := (MyColour and $FF00) shr 8;
+  B := (MyColour and $FF0000) shr 16;
+  CalculateValues;
+end;
+
+end.
