@@ -4,7 +4,7 @@ object Form1: TForm1
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'Colour Picker'
-  ClientHeight = 259
+  ClientHeight = 273
   ClientWidth = 349
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -84,6 +84,7 @@ object Form1: TForm1
     01FFFFF000FFFFF8007FFFFC003FFFFC001FFFFC000FFFFC0007FFFE8003FFFF
     C001FFFFE001FFFFF000FFFFF800FFFFFC00FFFFFE00FFFFFF01FFFFFFC3}
   OldCreateOrder = False
+  OnCreate = FormCreate
   OnMouseDown = FormMouseDown
   OnMouseMove = FormMouseMove
   OnMouseUp = FormMouseUp
@@ -91,8 +92,8 @@ object Form1: TForm1
   PixelsPerInch = 120
   TextHeight = 16
   object lblHEX: TLabel
-    Left = 118
-    Top = 93
+    Left = 117
+    Top = 102
     Width = 28
     Height = 16
     Hint = 'Red, Green, Blue (hexadecimal 00-FF)'
@@ -102,28 +103,28 @@ object Form1: TForm1
   end
   object lblRed: TLabel
     Left = 94
-    Top = 18
+    Top = 8
     Width = 27
     Height = 16
     Caption = 'Red:'
   end
   object lblGreen: TLabel
     Left = 174
-    Top = 18
+    Top = 8
     Width = 39
     Height = 16
     Caption = 'Green:'
   end
   object lblBlue: TLabel
     Left = 266
-    Top = 18
+    Top = 8
     Width = 29
     Height = 16
     Caption = 'Blue:'
   end
   object lblRGB: TLabel
-    Left = 117
-    Top = 61
+    Left = 116
+    Top = 70
     Width = 28
     Height = 16
     Hint = 'Red, Green, Blue (decimal 0-255)'
@@ -132,8 +133,8 @@ object Form1: TForm1
     ShowHint = True
   end
   object lblInfo: TLabel
-    Left = 8
-    Top = 218
+    Left = 7
+    Top = 227
     Width = 334
     Height = 32
     Alignment = taCenter
@@ -143,8 +144,8 @@ object Form1: TForm1
     WordWrap = True
   end
   object lblHSV: TLabel
-    Left = 118
-    Top = 125
+    Left = 117
+    Top = 134
     Width = 29
     Height = 16
     Hint = 'Hue ('#176'), Saturation (%), Value (%)'
@@ -153,8 +154,8 @@ object Form1: TForm1
     ShowHint = True
   end
   object lblCMYK: TLabel
-    Left = 118
-    Top = 190
+    Left = 117
+    Top = 199
     Width = 37
     Height = 16
     Hint = 'Cyan (%), Magenta (%), Yellow (%), Black (%)'
@@ -163,8 +164,8 @@ object Form1: TForm1
     ShowHint = True
   end
   object lblHSL: TLabel
-    Left = 118
-    Top = 157
+    Left = 117
+    Top = 166
     Width = 27
     Height = 16
     Hint = 'Hue ('#176'), Saturation (%), Lightness (%)'
@@ -177,11 +178,11 @@ object Form1: TForm1
     Top = 59
     Width = 103
     Height = 103
-    TabOrder = 9
+    TabOrder = 10
   end
   object edtRD: TEdit
     Left = 127
-    Top = 16
+    Top = 6
     Width = 41
     Height = 24
     TabOrder = 0
@@ -189,7 +190,7 @@ object Form1: TForm1
   end
   object edtGD: TEdit
     Left = 219
-    Top = 16
+    Top = 6
     Width = 41
     Height = 24
     TabOrder = 1
@@ -197,15 +198,15 @@ object Form1: TForm1
   end
   object edtBD: TEdit
     Left = 301
-    Top = 16
+    Top = 6
     Width = 41
     Height = 24
     TabOrder = 2
     OnChange = edtBDChange
   end
   object edtRGB: TEdit
-    Left = 158
-    Top = 59
+    Left = 157
+    Top = 68
     Width = 137
     Height = 24
     Hint = 'Red, Green, Blue (decimal 0-255)'
@@ -213,23 +214,23 @@ object Form1: TForm1
     ParentShowHint = False
     ReadOnly = True
     ShowHint = True
-    TabOrder = 10
+    TabOrder = 11
   end
   object btnCopyRGB: TButton
-    Left = 301
-    Top = 59
+    Left = 300
+    Top = 68
     Width = 41
     Height = 25
     Hint = 'Copy RGB to clipboard'
     Caption = 'Copy'
     ParentShowHint = False
     ShowHint = True
-    TabOrder = 4
+    TabOrder = 5
     OnClick = btnCopyRGBClick
   end
   object edtHEX: TEdit
-    Left = 158
-    Top = 91
+    Left = 157
+    Top = 100
     Width = 137
     Height = 24
     Hint = 'Red, Green, Blue (hexadecimal 00-FF)'
@@ -237,23 +238,23 @@ object Form1: TForm1
     ParentShowHint = False
     ReadOnly = True
     ShowHint = True
-    TabOrder = 11
+    TabOrder = 12
   end
   object btnCopyHEX: TButton
-    Left = 301
-    Top = 91
+    Left = 300
+    Top = 100
     Width = 41
     Height = 25
     Hint = 'Copy HEX to clipboard'
     Caption = 'Copy'
     ParentShowHint = False
     ShowHint = True
-    TabOrder = 5
+    TabOrder = 6
     OnClick = btnCopyHEXClick
   end
   object edtHSV: TEdit
-    Left = 158
-    Top = 123
+    Left = 157
+    Top = 132
     Width = 137
     Height = 24
     Hint = 'Hue ('#176'), Saturation (%), Value (%)'
@@ -261,23 +262,23 @@ object Form1: TForm1
     ParentShowHint = False
     ReadOnly = True
     ShowHint = True
-    TabOrder = 12
+    TabOrder = 13
   end
   object btnCopyHSV: TButton
-    Left = 301
-    Top = 123
+    Left = 300
+    Top = 132
     Width = 41
     Height = 25
     Hint = 'Copy HSV to clipboard'
     Caption = 'Copy'
     ParentShowHint = False
     ShowHint = True
-    TabOrder = 6
+    TabOrder = 7
     OnClick = btnCopyHSVClick
   end
   object edtCMYK: TEdit
-    Left = 158
-    Top = 188
+    Left = 157
+    Top = 197
     Width = 137
     Height = 24
     Hint = 'Cyan (%), Magenta (%), Yellow (%), Black (%)'
@@ -285,23 +286,23 @@ object Form1: TForm1
     ParentShowHint = False
     ReadOnly = True
     ShowHint = True
-    TabOrder = 13
+    TabOrder = 14
   end
   object btnCopyCMYK: TButton
-    Left = 301
-    Top = 188
+    Left = 300
+    Top = 197
     Width = 41
     Height = 25
     Hint = 'Copy CMYK to clipboard'
     Caption = 'Copy'
     ParentShowHint = False
     ShowHint = True
-    TabOrder = 8
+    TabOrder = 9
     OnClick = btnCopyCMYKClick
   end
   object edtHSL: TEdit
-    Left = 158
-    Top = 155
+    Left = 157
+    Top = 164
     Width = 137
     Height = 24
     Hint = 'Hue ('#176'), Saturation (%), Lightness (%)'
@@ -309,18 +310,18 @@ object Form1: TForm1
     ParentShowHint = False
     ReadOnly = True
     ShowHint = True
-    TabOrder = 14
+    TabOrder = 15
   end
   object btnCopyHSL: TButton
-    Left = 301
-    Top = 155
+    Left = 300
+    Top = 164
     Width = 41
     Height = 25
     Hint = 'Copy HSL to clipboard'
     Caption = 'Copy'
     ParentShowHint = False
     ShowHint = True
-    TabOrder = 7
+    TabOrder = 8
     OnClick = btnCopyHSLClick
   end
   object btnPalette: TButton
@@ -332,8 +333,28 @@ object Form1: TForm1
     TabOrder = 3
     OnClick = btnPaletteClick
   end
-  object dlgColor: TColorDialog
-    Left = 48
-    Top = 24
+  object edtName: TEdit
+    Left = 157
+    Top = 39
+    Width = 137
+    Height = 24
+    Hint = 'Red, Green, Blue (decimal 0-255)'
+    TabStop = False
+    ParentShowHint = False
+    ReadOnly = True
+    ShowHint = True
+    TabOrder = 16
+  end
+  object btnCopyName: TButton
+    Left = 300
+    Top = 37
+    Width = 41
+    Height = 25
+    Hint = 'Copy RGB to clipboard'
+    Caption = 'Copy'
+    ParentShowHint = False
+    ShowHint = True
+    TabOrder = 4
+    OnClick = btnCopyNameClick
   end
 end

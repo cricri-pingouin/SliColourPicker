@@ -31,8 +31,9 @@ type
     lblHSL: TLabel;
     edtHSL: TEdit;
     btnCopyHSL: TButton;
-    dlgColor: TColorDialog;
     btnPalette: TButton;
+    edtName: TEdit;
+    btnCopyName: TButton;
     procedure FormPaint(Sender: TObject);
     procedure FormMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure FormMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
@@ -48,6 +49,8 @@ type
     procedure edtBDChange(Sender: TObject);
     procedure btnCopyHSLClick(Sender: TObject);
     procedure btnPaletteClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure btnCopyNameClick(Sender: TObject);
   private
     FCaptured: Boolean;
   public
@@ -58,6 +61,7 @@ var
   Form1: TForm1;
   //RGB
   R, G, B: Integer;
+  ColorData: TStringList;
 
 implementation
 
@@ -94,6 +98,23 @@ begin
     DrawFrameControl(Canvas.Handle, ClickRect, 0, DFCS_BUTTONPUSH);
     DrawIcon(Canvas.Handle, ClickRect.Left, ClickRect.Top, Screen.Cursors[crCross]);
   end;
+end;
+
+procedure TForm1.FormCreate(Sender: TObject);
+var
+  SRec: TSearchRec;
+  ColorFile: TFileName;
+begin
+  //Populate list of text files
+  ColorFile := '';
+  ColorData := TStringList.Create;
+  try
+    if FindFirst('*.txt', faAnyfile, SRec) = 0 then
+      ColorData.LoadFromFile(SRec.Name);
+  finally
+    FindClose(SRec)
+  end;
+//  ShowMessage('Colors loaded = ' + IntToStr(ColorData.Count));
 end;
 
 procedure TForm1.FormMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
@@ -141,6 +162,7 @@ end;
 
 procedure TForm1.CalculateValues();
 var
+  i: Integer;
   //CMYK
   C, M, Y, Rp, Gp, Bp, Kp: Single;
   //HSV
@@ -208,7 +230,7 @@ begin
   if (RGBmin = RGBmax) then
     Sat := 0.0
   else
-     Sat := RGBdelta / 255  / (1 - Abs(2 * Lum - 1));
+    Sat := RGBdelta / 255 / (1 - Abs(2 * Lum - 1));
   Sat := Round(Sat * 100);
   Lum := Round(Lum * 100);
   Hue := H;
@@ -218,6 +240,16 @@ begin
   edtHSV.Text := 'HSV(' + IntToStr(Round(H)) + ',' + IntToStr(Round(S * 100 / 255)) + ',' + IntToStr(Round(V * 100 / 255)) + ')';
   edtHSL.Text := 'HSL(' + IntToStr(Round(Hue)) + ',' + IntToStr(Round(Sat)) + ',' + IntToStr(Round(Lum)) + ')';
   edtCMYK.Text := 'CMYK(' + IntToStr(Round(C * 100)) + ',' + IntToStr(Round(M * 100)) + ',' + IntToStr(Round(Y * 100)) + ',' + IntToStr(Round(Kp * 100)) + ')';
+  //Display W3C name
+  edtName.Text := '';
+  for i := 0 to ColorData.Count - 1 do
+  begin
+    if Pos(edtRGB.Text, ColorData[i]) > 0 then
+    begin
+      edtName.Text := StringReplace(ColorData[i], edtRGB.Text + ' ', '', [rfReplaceAll, rfIgnoreCase]);
+      Exit;
+    end;
+  end;
 end;
 
 procedure TForm1.edtRDChange(Sender: TObject);
@@ -253,6 +285,11 @@ begin
   CalculateValues;
 end;
 
+procedure TForm1.btnCopyNameClick(Sender: TObject);
+begin
+  Clipboard.AsText := edtName.Text;
+end;
+
 procedure TForm1.btnCopyRGBClick(Sender: TObject);
 begin
   Clipboard.AsText := edtRGB.Text;
@@ -280,11 +317,14 @@ end;
 
 procedure TForm1.btnPaletteClick(Sender: TObject);
 var
+  Dlg: TColorDialog;
   MyColour: TColor;
 begin
-  dlgColor.Color := R + G shl 8 + B shl 16;
-  if dlgColor.Execute then
-    MyColour := dlgColor.Color
+  Dlg := TColorDialog.Create(Form1);
+  Dlg.Color := R + G shl 8 + B shl 16;
+  ;
+  if Dlg.Execute then
+    MyColour := Dlg.Color
   else
     Exit;
   R := MyColour and $FF;
@@ -294,3 +334,4 @@ begin
 end;
 
 end.
+
